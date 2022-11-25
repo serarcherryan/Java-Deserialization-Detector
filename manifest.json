@@ -1,20 +1,20 @@
 {
-  "name": "Tabnabbing Detector",
-  "action": {
-    "default_icon": {
-      "32": "image/green.jpg"
-    }
-  },
-  "description": "Detect Tabnabbing Attacks",
-  "version": "0.1",
-  "manifest_version": 3,
-  "permissions": ["activeTab","scripting"],
-  "host_permissions": ["<all_urls>"],
-  "background": {
-    "service_worker": "background.js"
-  },
-  "content_scripts": [{
-    "matches": ["<all_urls>"],
-    "js": ["screenshots.js"]
-  }]
+    "name": "Java Deserialization Detector",
+    "action": {
+        "default_icon": {
+            "32": "image/logo192.png"
+        }
+    },
+    "description": "Detect Tabnabbing Attacks",
+    "version": "0.1",
+    "manifest_version": 3,
+    "permissions": ["activeTab", "cookies", "webRequestBlocking", "webRequest"],
+    "host_permissions": ["*://*/*", "activeTab", "<all_urls>", "*.*"],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [{
+        "matches": ["<all_urls>"],
+        "js": ["content.js"]
+    }]
 }
