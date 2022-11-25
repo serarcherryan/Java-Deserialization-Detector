@@ -2,7 +2,10 @@
     "name": "Java Deserialization Detector",
     "action": {
         "default_icon": {
-            "32": "image/logo192.png"
+            "16": "image/logo192.png",
+            "32": "image/logo192.png",
+            "48": "image/logo192.png",
+            "128": "image/logo192.png"
         }
     },
     "description": "Detect Tabnabbing Attacks",
