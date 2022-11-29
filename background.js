@@ -12,6 +12,7 @@ chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
             chrome.cookies.get({"url":domain, "name":"RememberMe"}, function(cookies) {
                         console.log("The cookie is");
                         console.log(cookies);
+                        
                         cookie = cookies;
                  });
           });
