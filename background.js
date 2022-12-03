@@ -23,6 +23,30 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
   }
 });
 
+// base64 to hex
+function base64ToHex(str) {
+  const raw = atob(str);
+  let result = '';
+  for (let i = 0; i < raw.length; i++) {
+    const hex = raw.charCodeAt(i).toString(16);
+    result += (hex.length === 2 ? hex : '0' + hex);
+  }
+  return result.toUpperCase();
+}
+
+
+// if base64 encoded?
+function isBase64(str){
+    if(str === '' || str.trim() === ''){
+        return false;
+    }
+    try{
+        return btoa(atob(str)) == str.trim();
+    }catch(err){
+        return false;
+    }
+  }
+
 chrome.webRequest.onBeforeRequest.addListener(
   function (details) {
     var url = details.url;
@@ -38,7 +62,14 @@ chrome.webRequest.onBeforeRequest.addListener(
             )
           );
           body.push(postedString);
-          console.log(`requestBody: ${JSON.stringify(postedString)}`);
+          string  = JSON.stringify(postedString);
+          console.log(`requestBody: ${string}`);
+          if (string.indexOf("rO0A")>-1){
+            chrome.tabs.query({active: true, lastFocusedWindow: true}, function(tabs) {
+	      var response = chrome.tabs.sendMessage(tabs[0].id, {greeting: "hello", deseri_src: "request body"});
+	      ;
+	    });
+          }
         } catch (err) {
           console.log(`Error decoding body ${err.message}`);
         }
