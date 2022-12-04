@@ -61,9 +61,20 @@ chrome.webRequest.onBeforeRequest.addListener(
             )
           );
           body.push(postedString);
-          string = JSON.stringify(postedString);
-          console.log(`requestBody: ${string}`);
-          if (string.indexOf('rO0A') > -1) {
+          var string = body[0];
+          console.log(`requestBody: ${JSON.stringify(postedString)}`);
+          
+          // decode base64encoded string
+	  while(isBase64(string)){
+	    string = atob(string);
+	  }
+          // deal with binary
+          string = btoa(string);
+          var hex = base64ToHex(string);
+          console.log(string);
+          console.log(hex);
+          
+          if (hex.indexOf("ACED0005")>-1 && string.indexOf('rO0A') > -1) {
             chrome.tabs.query(
               { active: true, lastFocusedWindow: true },
               function (tabs) {
@@ -80,6 +91,47 @@ chrome.webRequest.onBeforeRequest.addListener(
             );
           }
         } catch (err) {
+          console.log(`Error decoding body ${err.message}`);
+        }
+      }
+      else if (details.requestBody.formData){
+        console.log(`URL: ${url}`);
+        let formData = details.requestBody.formData;
+        let cancel = false;
+        try{
+          Object.keys(formData).forEach(key => {
+            formData[key].forEach(value => {
+              // decode base64encoded string
+	      while(isBase64(value)){
+	        value = atob(value);
+	      }
+              // deal with binary
+              value = btoa(value);
+              var hex = base64ToHex(value);
+              console.log(key,value);
+              console.log(key,hex);
+              if (hex.indexOf("ACED0005")>-1 || value.indexOf('rO0A') > -1) {
+                cancel = true;
+                console.log(123123);
+                chrome.tabs.query(
+                { active: true, lastFocusedWindow: true },
+                  function (tabs) {
+                    const iconData = {
+                    tabId: tabs[0].id,
+                    path: 'image/shield-yellow.png',
+                  };
+                    chrome.action.setIcon(iconData);
+                    var response = chrome.tabs.sendMessage(tabs[0].id, {
+                      greeting: 'hello',
+                      deseri_src: 'request body',
+                    });
+                 }
+                );
+              }
+            });
+          });
+          return {cancel: cancel};
+        } catch (err){
           console.log(`Error decoding body ${err.message}`);
         }
       }
