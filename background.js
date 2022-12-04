@@ -8,7 +8,8 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
       var tab = tabs[0];
       var url = new URL(tab.url);
       domain = url.hostname;
-      console.log(domain);
+      console.log(`domain: ${domain}`);
+
       try {
         chrome.cookies.getAll({ domain: domain }, function (cookies) {
           cookies.forEach((item) => {
@@ -53,6 +54,7 @@ chrome.webRequest.onBeforeRequest.addListener(
       if (details.requestBody.raw) {
         console.log(`URL: ${url}`);
         console.log('-------');
+       
         try {
           var postedString = decodeURIComponent(
             String.fromCharCode.apply(
@@ -64,20 +66,18 @@ chrome.webRequest.onBeforeRequest.addListener(
           string = JSON.stringify(postedString);
           console.log(`requestBody: ${string}`);
           if (string.indexOf('rO0A') > -1) {
-            const iconData = {
-              tabId: tabs[0].id,
-              path: 'image/shield-yellow.png',
-            };
-            chrome.action.setIcon(iconData);
-
             chrome.tabs.query(
               { active: true, lastFocusedWindow: true },
               function (tabs) {
+                const iconData = {
+                  tabId: tabs[0].id,
+                  path: 'image/shield-yellow.png',
+                };
+                chrome.action.setIcon(iconData);
                 var response = chrome.tabs.sendMessage(tabs[0].id, {
                   greeting: 'hello',
                   deseri_src: 'request body',
                 });
-                // Send Message to POPUP.js
               }
             );
           }
@@ -90,3 +90,5 @@ chrome.webRequest.onBeforeRequest.addListener(
   { urls: ['<all_urls>'] },
   ['requestBody']
 );
+
+
