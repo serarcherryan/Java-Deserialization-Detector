@@ -1,21 +1,23 @@
 {
     "name": "Java Deserialization Detector",
     "action": {
+        "default_title": "Detect Java Deserialization",
         "default_icon": {
-            "16": "image/logo192.png",
-            "32": "image/logo192.png",
-            "48": "image/logo192.png",
-            "128": "image/logo192.png"
+            "16": "image/shield-green.png",
+            "32": "image/shield-green.png",
+            "48": "image/shield-green.png",
+            "128": "image/shield-green.png"
         },
         "default_popup": "popup.html"
     },
     "description": "Detect Java Deserialization Attacks",
     "version": "0.1",
     "manifest_version": 3,
-    "permissions": ["activeTab", "cookies", "webRequestBlocking", "webRequest"],
+    "permissions": ["activeTab", "cookies", "webRequestBlocking", "webRequest", "notifications"],
     "host_permissions": ["*://*/*", "activeTab", "<all_urls>", "*.*"],
     "background": {
-        "service_worker": "background.js"
+        "service_worker": "background.js",
+        "type": "module"
     },
     "content_scripts": [{
         "matches": ["<all_urls>"],
