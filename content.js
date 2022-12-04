@@ -43,7 +43,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   );
   if (request.greeting === 'hello') {
     console.log("HELLO!!");
-    insert_style(request.deseri_src);
+    // insert_style(request.deseri_src);
     text = request.deseri_src;
   }else if(request.greeting === 'popup') {
     console.log("POPUP!! --> " + text);

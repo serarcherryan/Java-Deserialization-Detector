@@ -53,8 +53,6 @@ chrome.webRequest.onBeforeRequest.addListener(
     if (details.method == 'POST') {
       if (details.requestBody.raw) {
         console.log(`URL: ${url}`);
-        console.log('-------');
-       
         try {
           var postedString = decodeURIComponent(
             String.fromCharCode.apply(
